@@ -10,8 +10,7 @@ typedef struct {
      int legajo;
      char nombreYapellido [30];
      int edad;
-     int anio;
-//año que cursa, recordar que no podemos utilizar la ñ para definir variables
+     int anio; //año que cursa, recordar que no podemos utilizar la ñ para definir variables
 } stAlumno;
 
 // Extra
@@ -33,71 +32,26 @@ void agregarAlumnos_alArchivo(stAlumno alumno[], const int validos);            
 void pasarRegistro_Arreglo(stAlumno alumno[], int *validos, const int dim);         // Ej 12
 int cantidadRegistros();                                // Ej 13
 void buscarAlumno_i(const int index);                   // Ej 14
+int buscarAlumno_legajo(const int legajo);              // Ej 15
+void modificarAlumno();                                 // Ej 15
+void invertirOrden_archivo();                           // Ej 16
 
-/** 15.Realice una (o varias) funciones que permitan modificar un registro existente en el
-    archivo de alumnos. La misma debe permitir modificar uno o todos los campos de la estructura
-    y sobreescribir el registro existente en el archivo. */
-int buscarAlumno_legajo(const int legajo)
+
+/** 17. Hacer una función principal que pruebe el funcionamiento de todos los incisos anteriores,
+    con un menú de opciones para poder ejecutar todas las funciones requeridas. Tengan presente
+    la correcta declaración y el ámbito de variables.*/
+void menu()
 {
-    int posicion = -1;
-    stAlumno aux;
-    FILE * archivo = fopen(registroArchivo, "rb");
-    if(archivo != NULL)
-    {
-        while (fread(&aux, sizeof(stAlumno), 1, archivo) >0)
-        {
-            if(aux.legajo == legajo)
-            {
-                posicion = ftell(archivo);
-            }
-
-        }
-        fclose(archivo);
-    } else
-    {
-        printf("Error: no se pudo cargar el archivo.\n");
-    }
-    return posicion;
+    printf("No voy a perder tiempo con un menú en esta etapa, \ntengo varios bonitos como los primero 3 TP\n");
+    printf("Descomenta el codigo para ver todas las funciones... estan probadas.\n");
 }
-
-void modificarAlumno()
-{
-    int legajo;
-    int posicion;
-    printf("\n>> Ingrese el legajo del alumno para modificarlo: ");
-    fflush(stdin);
-    scanf("%d", &legajo);
-
-     posicion = buscarAlumno_legajo(legajo);
-
-    stAlumno aux;
-    FILE * archivo = fopen(registroArchivo, "rb");
-
-    if(archivo !=NULL)
-    {
-        if(posicion >=0)
-        {
-            fseek(archivo, posicion*sizeof(stAlumno) , SEEK_SET);
-            fread(&aux, sizeof(stAlumno), 1, archivo );
-            mostrarAlumno(aux) ;
-        } else
-        {
-            printf("No se encuentra el alumno = -1// %d", posicion);
-        }
-        fclose(archivo);
-    } else
-    {
-        printf("Error: el archivo no se pudo abrir.\n");
-    }
-}
-
-
-
-
 
 int main()
 {
     setlocale(LC_ALL, "");
+    system("color 3e");
+    menu();
+
     // Genero un elemento para usar.
     stAlumno alumno;
     alumno.legajo = 12702;
@@ -200,11 +154,17 @@ int main()
 
     ///////////////////////////////////////////////////// Ejercicio 15 ////////////////////////////////////////////
 
+//    mostrarRegistro();
+//    modificarAlumno();
 
-    mostrarRegistro();
-    modificarAlumno();
+    ///////////////////////////////////////////////////// Ejercicio 16 ////////////////////////////////////////////
+//
+//    mostrarRegistro();
+//    invertirOrden_archivo();
+//    printf("\n\n                        El orden invertido de los alumnos queda: \n\n");
+//    mostrarRegistro();
 
-
+    ///////////////////////////////////////////////////// Ejercicio 17 ///////////////////////////////////////////
     printf("\n\n>>>                             Fin programa. !\n");
     return 0;
 }
@@ -604,5 +564,135 @@ void buscarAlumno_i(const int index)
     } else
     {
         printf("Error: no se pudo cargar el archivo.\n");
+    }
+}
+
+
+
+/** 15.Realice una (o varias) funciones que permitan modificar un registro existente en el
+    archivo de alumnos. La misma debe permitir modificar uno o todos los campos de la estructura
+    y sobreescribir el registro existente en el archivo. */
+int buscarAlumno_legajo(const int legajo)
+{
+    int posicion = -1;
+    stAlumno aux;
+    FILE * archivo = fopen(registroArchivo, "rb");
+    if(archivo != NULL)
+    {
+        while (fread(&aux, sizeof(stAlumno), 1, archivo) >0)
+        {
+            if(aux.legajo == legajo)
+            {
+                posicion = ftell(archivo) /  sizeof(stAlumno);
+            }
+        }
+        fclose(archivo);
+    }
+    else
+    {
+        printf("Error: no se pudo cargar el archivo.\n");
+    }
+    return posicion;
+}
+
+void modificarAlumno()
+{
+    int legajo;
+    int posicion;
+    printf("\n>> Ingrese el legajo del alumno para modificarlo: ");
+    fflush(stdin);
+    scanf("%d", &legajo);
+
+
+    posicion = buscarAlumno_legajo(legajo);
+    printf("Posicion: %i\n", posicion);
+
+    stAlumno aux;
+    FILE * archivo = fopen(registroArchivo, "r+b");             // r+b leer y modicar
+
+    if(archivo !=NULL)
+    {
+        if(posicion >=0)
+        {
+            //Me paro en la posicion del alumno
+            fseek(archivo, (posicion-1)*sizeof(stAlumno), SEEK_SET);
+            fread(&aux, sizeof(stAlumno), 1, archivo );
+
+            mostrarAlumno(aux);
+
+            // Corro un lugar porque me movi al mostrar alumno.
+            fseek(archivo, posicion*sizeof(stAlumno)*-1, SEEK_CUR);
+
+            char nombre[30];
+            // Cargo el alumno con todos los campos que tiene.
+            printf("            Modifico el alumno \n\n");
+            printf("> Ingrese su nombre y apellido: \n");
+            fflush(stdin);
+            gets(nombre);
+            strcpy(aux.nombreYapellido, nombre);
+            fflush(stdin);
+            printf("> Ingrese su legajo:\n");
+            fflush(stdin);
+            scanf("%i", &aux.legajo);
+            printf("> Ingrese su edad:\n");
+            fflush(stdin);
+            scanf("%i", &aux.edad);
+            printf("> Ingrese que año cursa:\n");
+            fflush(stdin);
+            scanf("%i", &aux.anio);
+
+            // Ahora cargo ese alumno al archivo.
+            fwrite(&aux, sizeof(stAlumno), 1, archivo);
+
+        }
+        else
+        {
+            printf("No se encontro ningun alumno con ese legajo.\n");
+        }
+        fclose(archivo);
+    }
+    else
+    {
+        printf("Error: el archivo no se pudo abrir.\n");
+    }
+}
+
+
+/** 16.Dado un archivo de alumnos, hacer una función que invierta los elementos
+    del mismo. No se puede usar otro archivo auxiliar ni un arreglo auxiliar. Debe
+    trabajar sobre el archivo. Puede utilizar variables de tipo alumno auxiliares.*/
+void invertirOrden_archivo()
+{
+    stAlumno alumno;
+    stAlumno auxiliar_primero;
+    stAlumno auxiliar_ultimo;
+    int i= 0;   // inicio
+
+    // J es mi final de archivo.
+    int j=cantidadRegistros();
+    j--;
+    FILE * archivo = fopen(registroArchivo, "r+b");
+    if (archivo != NULL)
+    {
+        while(i<j)
+        {
+            // Me paro en i, y lo guardo
+            fseek(archivo, (i)*sizeof(stAlumno), SEEK_SET);
+            fread(&auxiliar_primero, sizeof(stAlumno), 1, archivo);
+
+            fseek(archivo, (j)*sizeof(stAlumno), SEEK_SET);
+            fread(&auxiliar_ultimo, sizeof(stAlumno), 1, archivo);
+            fseek(archivo, (j)*sizeof(stAlumno), SEEK_SET);         // vuelvo uno porque al guarda el alumno me desplace
+            fwrite(&auxiliar_primero, sizeof(stAlumno),1,archivo);    // le puse el dato de i
+            fseek(archivo, (i)*sizeof(stAlumno), SEEK_SET);         // vuelvo a i y le paso el ultimo
+            fwrite(&auxiliar_ultimo, sizeof(stAlumno),1,archivo);
+            i++;
+            j--;
+        }
+
+        fclose(archivo);
+    } else
+    {
+        printf("Error: el archivo no se pudo cargar el archivo.\n");
     }
 }

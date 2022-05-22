@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1652912823 source:g:\otros ordenadores\mi portátil\carpeta drive\utn\1º cuatrimestre\programacion\practica 2 examen\tpn 7 - archivos\tpn 7 - archivos\main.c
+1653094596 source:g:\otros ordenadores\mi portátil\carpeta drive\utn\1º cuatrimestre\programacion\practica 2 examen\tpn 7 - archivos\tpn 7 - archivos\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -26,6 +26,13 @@
 	"pila.h"
 
 1652549409 c:\users\equipo\desktop\carpeta drive\utn\1º cuatrimestre\programacion\practica 2 examen\tpn 7 - archivos\tpn 7 - archivos\pila.h
+	<stdio.h>
+	<malloc.h>
+
+1652549409 source:c:\users\equipo\desktop\carpeta drive\utn\1º cuatrimestre\programacion\2. practica 2 examen\tpn 7 - archivos\tpn 7 - archivos\pila.c
+	"pila.h"
+
+1652549409 c:\users\equipo\desktop\carpeta drive\utn\1º cuatrimestre\programacion\2. practica 2 examen\tpn 7 - archivos\tpn 7 - archivos\pila.h
 	<stdio.h>
 	<malloc.h>
 
