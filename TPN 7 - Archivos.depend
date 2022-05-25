@@ -36,3 +36,18 @@
 	<stdio.h>
 	<malloc.h>
 
+1653224370 source:g:\otros ordenadores\mi portátil\carpeta drive\utn\1º cuatrimestre\programacion\2. practica 2 examen\tpn 7 - archivos\tpn 7 - archivos\main.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<locale.h>
+	<string.h>
+	"pila.h"
+
+1490112217 g:\otros ordenadores\mi portátil\carpeta drive\utn\1º cuatrimestre\programacion\2. practica 2 examen\tpn 7 - archivos\tpn 7 - archivos\pila.h
+	<stdio.h>
+	<malloc.h>
+
+1648305325 source:g:\otros ordenadores\mi portátil\carpeta drive\utn\1º cuatrimestre\programacion\2. practica 2 examen\tpn 7 - archivos\tpn 7 - archivos\pila.c
+	"pila.h"
+
